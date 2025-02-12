@@ -1,0 +1,13 @@
+<p>{{ article_questions.0.article.title }}</p>
+
+<form method="POST">
+	{% csrf_token %}
+	{% for data in article_questions %}
+		<div class="question">
+			<p>{{ data.question }}</p>
+			<textarea class="form-control" name="answer_{{ data.id }}">{{ data.answer }}</textarea>
+			<input type="hidden" name="question_id_{{ data.id }}" value="{{ data.id }}">
+		</div>
+	{% endfor %}
+	<button type="submit" class="btn btn-primary">Submit</button>
+</form>
