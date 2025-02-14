@@ -2,6 +2,9 @@ from django.shortcuts import (render, redirect, get_object_or_404,)
 from django.http import HttpResponse
 from .models import *
 from .forms import *
+from articles.models import Article
+
+
 def article_detail(request, article_id):
 	article_questions = ArticleQuestion.objects.filter(article=article_id)
 
