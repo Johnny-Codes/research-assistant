@@ -1,5 +1,12 @@
 {% for article in articles %}
 	<div class="article">
 		<h2><a href="{% url 'article_detail' article_id=article.id  %}">{{ article.title }}</a></h2>
+		{% if article.tags %}
+			<p>Tags: 
+				{% for tag in article.tags.all %}
+					{{ tag.name }}
+				{% endfor %}
+			</p>
+		{% endif %}
 	</div>
 {% endfor %}
