@@ -1,4 +1,7 @@
-<p>{{ article_questions.0.article.title }}</p>
+{% extends "core/base.html"%}
+
+{% block content %}
+<h2>{{ article_questions.0.article.title }}</h2>
 
 <form method="POST">
 	{% csrf_token %}
@@ -11,3 +14,4 @@
 	{% endfor %}
 	<button type="submit" class="btn btn-primary">Submit</button>
 </form>
+{% endblock %} 

@@ -1,3 +1,26 @@
+{% extends "core/base.html" %}
+
+{% block title %}Project List{% endblock %}
+
+{% block content %}
 {% for project in projects %}
-    <h1>{{ project.title }}</h1>
+<div x-data="{ open: false }">
+    <button @click="open = !open">{{ project.title }}</button>
+    <div x-show="open">
+        {% for article in project.articles.all %}
+            <ul class="article">
+                <li><a href="{% url 'article_detail' article_id=article.id  %}">{{ article.title }}</a></h2>
+                {% if article.tags.all %}
+                    <p>Tags: 
+                        {% for tag in article.tags.all %}
+                            {{ tag.name }}
+                        {% endfor %}
+                    </p>
+                {% endif %}
+                </li>
+            </ul>
+        {% endfor %}
+    </div>
+</div>
 {% endfor %}
+{% endblock %}

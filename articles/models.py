@@ -12,11 +12,20 @@ class Article(models.Model):
         null=True,
     )
     created_at = models.DateTimeField(auto_now_add=True)
-    tags = models.ManyToManyField("Tag", related_name="articles")
+    tags = models.ManyToManyField(
+        "Tag",
+        related_name="articles",
+    )
     project = models.ManyToManyField(
         "Project",
         related_name="articles",
         blank=True,
+    )
+    summary = models.TextField(blank=True, null=True)
+    file = models.FileField(
+        upload_to="uploads/",
+        blank=True,
+        null=True,
     )
 
     def __str__(self):
