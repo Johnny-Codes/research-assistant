@@ -6,17 +6,25 @@ from articles.models import Article
 
 
 def article_detail(request, article_id):
-	article_questions = ArticleQuestion.objects.filter(article=article_id)
-
-	if request.method == 'POST':
-		for data in article_questions:
-			answer = request.POST.get(f'answer_{data.id}')
-			if answer:
-				data.answer = answer
-				data.save()
-		return redirect('article_detail', article_id=article_id)
-	return render(request, './notes/article_detail.html', {'article_questions': article_questions})
+    article_questions = ArticleQuestion.objects.filter(article=article_id)
+    
+    for aq in article_questions:
+        if aq.article.file:
+            aq.article.file_absolute_url = request.build_absolute_uri(aq.article.file.url)
+        else:
+            aq.article.file_absolute_url = None
+    
+    if request.method == 'POST':
+        for data in article_questions:
+            answer = request.POST.get(f'answer_{data.id}')
+            if answer:
+                data.answer = answer
+                data.save()
+        return redirect('article_detail', article_id=article_id)
+    
+    
+    return render(request, './notes/article_detail.html', {'article_questions': article_questions})
 
 def article_list(request):
-	articles = Article.objects.all()
-	return render(request, './notes/article_list.html', {'articles': articles})
+    articles = Article.objects.all()
+    return render(request, './notes/article_list.html', {'articles': articles})

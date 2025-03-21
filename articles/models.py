@@ -22,12 +22,7 @@ class Article(models.Model):
         blank=True,
     )
     summary = models.TextField(blank=True, null=True)
-    file = models.FileField(
-        upload_to="uploads/",
-        blank=True,
-        null=True,
-    )
-
+    file = models.FileField(upload_to="uploads/", blank=True, null=True,)
     def __str__(self):
         return self.title
 

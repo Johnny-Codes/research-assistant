@@ -9,9 +9,7 @@ def project_list_view(request):
 
 def project_article_list_view(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
-    print(f"{project=}")
     articles = Article.objects.filter(project=project_id)
-    print(f"{articles=}")
     return render(
         request,
         "./articles/article_list.html",
