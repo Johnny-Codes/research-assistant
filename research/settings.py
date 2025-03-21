@@ -33,6 +33,12 @@ ALLOWED_HOSTS = [
     "0.0.0.0:8000",
     "10.56.1.56:8000",
     "10.56.1.56",
+    "192.168.86.29",
+    "192.168.86.29:8000",
+    "136.53.85.159:8001",
+    "136.53.85.159",
+    "pmjohns.hopto.org",
+    "pmjohns.hopto.org:8001",
 ]
 
 
@@ -152,9 +158,12 @@ STATICFILES_DIRS = [
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = 'media'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 AUTH_USER_MODEL = "users.CustomUser"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
