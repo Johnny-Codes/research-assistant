@@ -5,6 +5,8 @@ import semchunk
 import pymupdf4llm
 import tiktoken
 
+import weaviate
+
 # Create your models here.
 class Article(models.Model):
     title = models.CharField(max_length=256)
@@ -27,7 +29,7 @@ class Article(models.Model):
     summary = models.TextField(blank=True, null=True)
     file = models.FileField(upload_to="uploads/", blank=True, null=True,)
     chunked = models.BooleanField(default=False)
-
+    embedding_id = models.CharField(max_length=36, blank=True, null=True,)
     def chunk_article(self):
         if self.chunked == True:
             return f'{self.title} has already been chunked'
@@ -39,6 +41,25 @@ class Article(models.Model):
         chunks = chunker(md_text)
         # step 3: embed
         self.chunked = True
+        try:
+            client = weaviate.connect_to_local()
+            print("Successfully connected to weaviate")
+        except Exception as e:
+            print(f"error connecting to weaviate {e}")
+            client = None
+
+        with client.batch as batch:
+            batch.batch_size = 10
+            embedding_ids = []
+            for chunk in chunks:
+                response = batch.add_data_objects(
+                    data_object={"content": chunk},
+                    class_name="ResearchArticle"
+                )
+                embedding_id = response['id']
+                embedding_ids.append(embedding_id)
+            self.embedding_id = ','.join(embedding_ids)
+            self.save()
         
 
     def __str__(self):

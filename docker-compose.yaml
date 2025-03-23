@@ -11,7 +11,8 @@ services:
       - weaviate
     volumes:
       - .:/app
-    command: gunicorn research.wsgi:application --bind 0.0.0.0:8000
+    command: /bin/bash -c "until curl -s http://weaviate:8080/v1; do echo 'waiting for weaviate'; sleep 5; done; gunicorn research.wsgi:application --bind 0.0.0.0:8000"     
+
 
   weaviate:
     image: semitechnologies/weaviate:1.22.3
@@ -23,6 +24,7 @@ services:
       - QUERY_DEFAULTS_LIMIT=25
     ports:
       - "8080:8080"
+      - "50051:50051"
     volumes:
       - weaviate_data:/var/lib/weaviate
 
