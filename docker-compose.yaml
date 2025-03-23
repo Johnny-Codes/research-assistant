@@ -7,26 +7,6 @@ services:
       - .env  # Ensure this file contains database credentials
     ports:
       - "8000:8000"
-    depends_on:
-      - weaviate
     volumes:
       - .:/app
-    command: /bin/bash -c "until curl -s http://weaviate:8080/v1; do echo 'waiting for weaviate'; sleep 5; done; gunicorn research.wsgi:application --bind 0.0.0.0:8000"     
-
-
-  weaviate:
-    image: semitechnologies/weaviate:1.22.3
-    container_name: weaviate
-    restart: always
-    environment:
-      - AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED=true
-      - PERSISTENCE_DATA_PATH=/var/lib/weaviate
-      - QUERY_DEFAULTS_LIMIT=25
-    ports:
-      - "8080:8080"
-      - "50051:50051"
-    volumes:
-      - weaviate_data:/var/lib/weaviate
-
-volumes:
-  weaviate_data:
+    command: "gunicorn research.wsgi:application --bind 0.0.0.0:8000"
